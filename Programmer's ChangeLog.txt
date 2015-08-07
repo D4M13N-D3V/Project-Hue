@@ -1,0 +1,13 @@
+To Do List 
+
+Programmer's changeLog 
+(Update's go on top)
+
+	UK - 07/08/2015
+	US - 08/07/2015 
+- Created a First-Person Controller
+- Created the view of the camera 
+- Created a placeholder Plane
+- Imported Placeholder Assets
+- Created Project Hue File in Unity 
+
