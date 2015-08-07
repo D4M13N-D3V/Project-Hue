@@ -32,28 +32,36 @@ public class playercontroller : MonoBehaviour {
 		if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)){
 			if(usePlaceHolders){
 				renderer.material.mainTexture=leftStill;
-				transform.position += (Vector3.left*speed) * Time.deltaTime;
+				Vector3 temp = -camera.right;
+				temp.y = 0;
+				transform.position += (temp*speed) * Time.deltaTime;
 			}
 		}
 
 		if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)){
 			if(usePlaceHolders){
 				renderer.material.mainTexture=rightStill;
-				transform.position += (-Vector3.left*speed) * Time.deltaTime;
+				Vector3 temp = camera.right;
+				temp.y = 0;
+				transform.position += (temp*speed) * Time.deltaTime;
 			}
 		}
 
 		if(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)){
 			if(usePlaceHolders){
 				renderer.material.mainTexture=backStill;
-				transform.position += (-Vector3.back*speed) * Time.deltaTime;
+				Vector3 temp = camera.up;
+				temp.y = 0;
+				transform.position += (temp*speed) * Time.deltaTime;
 			}
 		}
 
 		if( Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)){
 			if(usePlaceHolders){
 				renderer.material.mainTexture=frontStill;
-				transform.position += (Vector3.back*speed) * Time.deltaTime;
+				Vector3 temp = -camera.up;
+				temp.y = 0;
+				transform.position += (temp*speed) * Time.deltaTime;
 			}
 		}
 
