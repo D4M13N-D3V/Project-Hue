@@ -7,7 +7,9 @@ public class playercontroller : MonoBehaviour {
 	public float colorPercent = 100.00F;
 	public int health;
 	public int speed;
+	public Transform firePos;
 
+	public GameObject projectile;
 
 	public Transform camera;
 	//PLACE HOLDER VARIABLES
@@ -23,11 +25,15 @@ public class playercontroller : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		renderer = GetComponent<Renderer> ();
+		cameraParent = GameObject.Find ("CameraParent");
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			Instantiate(projectile,firePos.position,Quaternion.identity);
+		}
 		
 		if (Input.GetKeyDown (KeyCode.Q)) {
 			GameObject[] trees = GameObject.FindGameObjectsWithTag("rotateWithCamera");
@@ -51,6 +57,7 @@ public class playercontroller : MonoBehaviour {
 				Vector3 temp = -camera.right;
 				temp.y = 0;
 				transform.position += (temp*speed) * Time.deltaTime;
+				currentDirection="Left";
 			}
 		}
 
@@ -60,6 +67,7 @@ public class playercontroller : MonoBehaviour {
 				Vector3 temp = camera.right;
 				temp.y = 0;
 				transform.position += (temp*speed) * Time.deltaTime;
+				currentDirection="Right";
 			}
 		}
 
@@ -69,6 +77,7 @@ public class playercontroller : MonoBehaviour {
 				Vector3 temp = camera.up;
 				temp.y = 0;
 				transform.position += (temp*speed) * Time.deltaTime;
+				currentDirection="Up";
 			}
 		}
 
@@ -78,6 +87,7 @@ public class playercontroller : MonoBehaviour {
 				Vector3 temp = -camera.up;
 				temp.y = 0;
 				transform.position += (temp*speed) * Time.deltaTime;
+				currentDirection="Down";
 			}
 		}
 
