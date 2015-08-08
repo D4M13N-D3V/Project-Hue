@@ -18,7 +18,7 @@ public class playercontroller : MonoBehaviour {
 	public Texture backStill;
 	public Texture leftStill;
 	public Texture rightStill;
-
+	public GameObject cameraParent;
 	public Renderer renderer;
 	// Use this for initialization
 	void Start () {
@@ -27,9 +27,25 @@ public class playercontroller : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+	
+		
+		if (Input.GetKeyDown (KeyCode.Q)) {
+			GameObject[] trees = GameObject.FindGameObjectsWithTag("rotateWithCamera");
+			cameraParent.transform.eulerAngles = cameraParent.transform.eulerAngles+new Vector3(0,-90,0);
+			
+			for (int i = 0; i < trees.Length; i++)
+				trees[i].transform.eulerAngles = trees[i].transform.eulerAngles+new Vector3(0,-90,0);
+			}
+		
+		if (Input.GetKeyDown (KeyCode.E)) {
+			GameObject[] trees = GameObject.FindGameObjectsWithTag ("rotateWithCamera");
+			cameraParent.transform.eulerAngles = cameraParent.transform.eulerAngles + new Vector3 (0, 90, 0);
+			for (int i = 0; i < trees.Length; i++)
+				trees[i].transform.eulerAngles = trees[i].transform.eulerAngles + new Vector3 (0, 90, 0);
+			}
 
 
-		if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)){
+		if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.RightArrow) || !Input.GetKey(KeyCode.D)){
 			if(usePlaceHolders){
 				renderer.material.mainTexture=leftStill;
 				Vector3 temp = -camera.right;
@@ -38,7 +54,7 @@ public class playercontroller : MonoBehaviour {
 			}
 		}
 
-		if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)){
+		if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)&& !Input.GetKey(KeyCode.LeftArrow) || !Input.GetKey(KeyCode.A)){
 			if(usePlaceHolders){
 				renderer.material.mainTexture=rightStill;
 				Vector3 temp = camera.right;
