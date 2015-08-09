@@ -1,9 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\playercontroller.cs">
     <Files>
       <File FileName="Assets\Scripts\CameraFacing.cs" Line="17" Column="5" />
-      <File FileName="Assets\Scripts\playercontroller.cs" Line="28" Column="51" />
+      <File FileName="Assets\placeholderProjectile.cs" Line="16" Column="18" />
+      <File FileName="Assets\Scripts\Xbox360_Controls_CSHARP.cs" Line="110" Column="19" />
+      <File FileName="Assets\Scripts\playercontroller.cs" Line="164" Column="43" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

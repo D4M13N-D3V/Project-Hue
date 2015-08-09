@@ -26,7 +26,6 @@ public class placeholderProjectile : MonoBehaviour {
 		}
 		if (dir == "Down") {
 			transform.position = transform.position + (player.transform.up/4);
-			print ("test");
 		}
 	}
 	IEnumerator selfDestruct(){

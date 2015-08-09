@@ -47,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\CameraFacing.cs" />
+     <Compile Include="Assets\Scripts\Xbox360_Controls_CSHARP.cs" />
      <Compile Include="Assets\Scripts\playercontroller.cs" />
+     <Compile Include="Assets\keepSynced.cs" />
      <Compile Include="Assets\placeholderProjectile.cs" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
