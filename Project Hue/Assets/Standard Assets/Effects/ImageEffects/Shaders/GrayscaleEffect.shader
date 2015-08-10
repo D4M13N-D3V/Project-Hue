@@ -1,4 +1,4 @@
-Shader "Hidden/Grayscale Effect" {
+Shader "Grayscale Effect" {
 Properties {
 	_MainTex ("Base (RGB)", 2D) = "white" {}
 	_RampTex ("Base (RGB)", 2D) = "grayscaleRamp" {}

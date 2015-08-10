@@ -1,4 +1,4 @@
-Shader "Hidden/ContrastComposite" {
+Shader "ContrastComposite" {
 	Properties {
 		_MainTex ("Base (RGB)", 2D) = "" {}
 		_MainTexBlurred ("Base Blurred (RGB)", 2D) = "" {}

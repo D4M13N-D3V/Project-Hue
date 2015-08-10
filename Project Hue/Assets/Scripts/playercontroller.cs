@@ -4,12 +4,20 @@ using System.Collections;
 public class playercontroller : MonoBehaviour {
 
 	public string currentDirection = "Down";
-	public float colorPercent = 100.00F;
+	public float colorPercent = 255.00F;
 	public int health;
 	public float speed;
 	public Transform firePos;
+	public int currentAngle = 0;
+	bool canShoot = true;
 
+	//WEAPON OPTIONS
+	
 	public GameObject projectile;
+	public float attackCoolDownTime = 1;
+	public float attackColorTake = 1;
+	public float attackDamage = 1;
+
 
 	public Transform camera;
 	//PLACE HOLDER VARIABLES
@@ -64,8 +72,7 @@ public class playercontroller : MonoBehaviour {
 
 		//--------------------------------------------------------------------
 		// Direction Controls
-		
-		print (Input.GetAxis("CONTROLLER_VRS")+" ,"+ Input.GetAxis("CONTROLLER_HRS"));
+
 
 		if(Input.GetAxis ("CONTROLLER_HRS")<-0.4F && Input.GetAxis ("CONTROLLER_VRS")<-0.1F){
 			currentDirection = "LeftUp";
@@ -107,25 +114,33 @@ public class playercontroller : MonoBehaviour {
 		}
 		//--------------------------------------------------------------------
 		//MISC Controls
-		if (Input.GetAxis("CONTROLLER_RIGHTTRIGGER")>0) {
-			Instantiate(projectile,firePos.position,Quaternion.identity);
+		if (Input.GetAxis ("CONTROLLER_RIGHTTRIGGER") > 0) {
+			if (canShoot && colorPercent-attackColorTake>0) {
+				Instantiate (projectile, firePos.position, Quaternion.identity);
+				canShoot=false;
+				StartCoroutine(coolDown());
+				colorPercent = colorPercent-attackColorTake;
+			}
 		}
 		
 		if (Input.GetButtonDown ("CONTROLLER_LEFTBUMPER")) {
-			GameObject[] trees = GameObject.FindGameObjectsWithTag("rotateWithCamera");
-			cameraParent.transform.eulerAngles = cameraParent.transform.eulerAngles+new Vector3(0,-90,0);
+			currentAngle=currentAngle-90;
+			GameObject[] trees = GameObject.FindGameObjectsWithTag ("rotateWithCamera");
 			
-			for (int i = 0; i < trees.Length; i++)
-				trees[i].transform.eulerAngles = trees[i].transform.eulerAngles+new Vector3(0,-90,0);
+			cameraParent.transform.eulerAngles = cameraParent.transform.eulerAngles + new Vector3 (0, -90, 0);
+			for (int i = 0; i < trees.Length; i++){
+				trees [i].transform.eulerAngles = trees [i].transform.eulerAngles + new Vector3 (0, -90, 0);
 		}
-		
+
+		}
 		if (Input.GetButtonDown ("CONTROLLER_RIGHTBUMPER")) {
+			currentAngle=currentAngle+90;
 			GameObject[] trees = GameObject.FindGameObjectsWithTag ("rotateWithCamera");
 			cameraParent.transform.eulerAngles = cameraParent.transform.eulerAngles + new Vector3 (0, 90, 0);
-			for (int i = 0; i < trees.Length; i++)
-				trees[i].transform.eulerAngles = trees[i].transform.eulerAngles + new Vector3 (0, 90, 0);
+			for (int i = 0; i < trees.Length; i++) {
+				trees [i].transform.eulerAngles = trees [i].transform.eulerAngles + new Vector3 (0, 90, 0);
+			}
 		}
-		
 		//--------------------------------------------------------------------
 
 
@@ -149,8 +164,6 @@ public class playercontroller : MonoBehaviour {
 		
 		//--------------------------------------------------------------------
 		// Direction Controls
-		
-		print (Input.GetAxis ("KEYBOARD_VFACE"));
 		
 		if(Input.GetAxis ("KEYBOARD_HFACE")<-0F && Input.GetAxis ("KEYBOARD_VFACE")<0.0F){
 			currentDirection = "LeftUp";
@@ -193,10 +206,16 @@ public class playercontroller : MonoBehaviour {
 		//--------------------------------------------------------------------
 		//MISC Controls
 		if (Input.GetAxis("KEYBOARD_ATTACK")>0) {
-			Instantiate(projectile,firePos.position,Quaternion.identity);
+			if (canShoot && colorPercent-attackColorTake>0) {
+				Instantiate (projectile, firePos.position, Quaternion.identity);
+				canShoot=false;
+				StartCoroutine(coolDown());
+				colorPercent = colorPercent-attackColorTake;
+			}
 		}
 		
 		if (Input.GetButtonDown ("KEYBOARD_ANGLESWITCHLEFT")) {
+			currentAngle=currentAngle-90;
 			GameObject[] trees = GameObject.FindGameObjectsWithTag("rotateWithCamera");
 			cameraParent.transform.eulerAngles = cameraParent.transform.eulerAngles+new Vector3(0,-90,0);
 			
@@ -205,6 +224,7 @@ public class playercontroller : MonoBehaviour {
 		}
 		
 		if (Input.GetButtonDown ("KEYBOARD_ANGLESWITCHRIGHT")) {
+			currentAngle=currentAngle+90;
 			GameObject[] trees = GameObject.FindGameObjectsWithTag ("rotateWithCamera");
 			cameraParent.transform.eulerAngles = cameraParent.transform.eulerAngles + new Vector3 (0, 90, 0);
 			for (int i = 0; i < trees.Length; i++)
@@ -214,7 +234,10 @@ public class playercontroller : MonoBehaviour {
 
 	}
 
-
+	IEnumerator coolDown(){
+		yield return new WaitForSeconds(attackCoolDownTime);
+		canShoot = true;
+	}
 
 
 }
