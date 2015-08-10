@@ -1,0 +1,19 @@
+10/08/2015
+08/10/2015
+
+Build version - 09- 08-2015 @ 4:39pm
+
+Bug Information 
+- When The Left Joystick is moved in the following directions at quick successions (two quick taps in the mentioned directions should do it), the character moves on it's own. 
+
+Bug cause
+- Moving the Joystick twice in the following directions:
+	East
+	West
+	South East
+	South
+	South West
+
+The directions: North East, North and North West are not affected by this bug however.  
+
+
