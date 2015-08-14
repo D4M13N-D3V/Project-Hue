@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class playercontroller : MonoBehaviour {
@@ -31,15 +32,23 @@ public class playercontroller : MonoBehaviour {
 	public GameObject cameraParent;
 	public Renderer renderer;
 	public Rigidbody rigidbody;
+	public GameObject hud;
+	public GameObject colorgauge;
 	// Use this for initialization
 	void Start () {
 		renderer = GetComponent<Renderer> ();
 		rigidbody = GetComponent<Rigidbody> ();
 		cameraParent = GameObject.Find ("CameraParent");
+		hud = GameObject.Find ("HUD");
+		float percent = 1-((255 - colorPercent) / 255);
+		colorgauge = hud.transform.GetChild(0).gameObject;
+		colorgauge.GetComponent<Image>().fillAmount=percent;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		float percent = 1-((255 - colorPercent) / 255);
+		colorgauge.GetComponent<Image>().fillAmount=percent;
 
 		//CONTROLLER
 		//--------------------------------------------------------------------
@@ -86,12 +95,12 @@ public class playercontroller : MonoBehaviour {
 		//UP
 		else if(Input.GetAxis ("CONTROLLER_HRS")<-0.4F && Input.GetAxis ("CONTROLLER_VRS")>0.4F){
 			currentDirection = "LeftDown";
-			renderer.material.mainTexture=downStill;
+			renderer.material.mainTexture=leftStill;
 		}
 		//DOWN
 		else if(Input.GetAxis ("CONTROLLER_HRS")>0.4F && Input.GetAxis("CONTROLLER_VRS")>0.4F){
 			currentDirection = "RightDown";
-			renderer.material.mainTexture=upStill;
+			renderer.material.mainTexture=rightStill;
 		}
 		else if(Input.GetAxis ("CONTROLLER_HRS")<-0.4F){
 			currentDirection = "Left";
@@ -116,10 +125,11 @@ public class playercontroller : MonoBehaviour {
 		//MISC Controls
 		if (Input.GetAxis ("CONTROLLER_RIGHTTRIGGER") > 0) {
 			if (canShoot && colorPercent-attackColorTake>0) {
-				Instantiate (projectile, firePos.position, Quaternion.identity);
+				GameObject temp = Instantiate (projectile, firePos.position, Quaternion.identity) as GameObject;
 				canShoot=false;
 				StartCoroutine(coolDown());
 				colorPercent = colorPercent-attackColorTake;
+				temp.GetComponent<placeholderProjectile>().damage=attackDamage;
 			}
 		}
 		
@@ -207,10 +217,11 @@ public class playercontroller : MonoBehaviour {
 		//MISC Controls
 		if (Input.GetAxis("KEYBOARD_ATTACK")>0) {
 			if (canShoot && colorPercent-attackColorTake>0) {
-				Instantiate (projectile, firePos.position, Quaternion.identity);
+				GameObject temp = Instantiate (projectile, firePos.position, Quaternion.identity) as GameObject;
 				canShoot=false;
 				StartCoroutine(coolDown());
 				colorPercent = colorPercent-attackColorTake;
+				temp.GetComponent<placeholderProjectile>().damage=attackDamage;
 			}
 		}
 		
