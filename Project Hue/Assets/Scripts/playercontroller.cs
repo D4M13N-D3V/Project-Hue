@@ -20,6 +20,11 @@ public class playercontroller : MonoBehaviour {
 	public float attackDamage = 1;
 
 
+	public GameObject hud;
+	public GameObject colorthing;
+	public GameObject healththing;
+
+
 	public Transform camera;
 	//PLACE HOLDER VARIABLES
 	
@@ -32,7 +37,6 @@ public class playercontroller : MonoBehaviour {
 	public GameObject cameraParent;
 	public Renderer renderer;
 	public Rigidbody rigidbody;
-	public GameObject hud;
 	public GameObject colorgauge;
 	// Use this for initialization
 	void Start () {
@@ -41,14 +45,24 @@ public class playercontroller : MonoBehaviour {
 		cameraParent = GameObject.Find ("CameraParent");
 		hud = GameObject.Find ("HUD");
 		float percent = 1-((255 - colorPercent) / 255);
-		colorgauge = hud.transform.GetChild(0).gameObject;
-		colorgauge.GetComponent<Image>().fillAmount=percent;
+		colorthing = hud.transform.GetChild(0).gameObject;
+		healththing = hud.transform.GetChild(1).gameObject;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		float percent = 1-((255 - colorPercent) / 255);
-		colorgauge.GetComponent<Image>().fillAmount=percent;
+		if (colorPercent > 100) {
+			
+			float percent = 1-((155 - (colorPercent-100)) / 155);
+			colorthing.GetComponent<Image>().fillAmount=percent;
+			healththing.GetComponent<Image>().fillAmount=1;
+		} else {
+			
+			float percent = 1-((100 - (colorPercent)) / 100);
+			
+			colorthing.GetComponent<Image>().fillAmount=0;
+			healththing.GetComponent<Image>().fillAmount=percent;
+		}
 
 		//CONTROLLER
 		//--------------------------------------------------------------------
@@ -124,7 +138,7 @@ public class playercontroller : MonoBehaviour {
 		//--------------------------------------------------------------------
 		//MISC Controls
 		if (Input.GetAxis ("CONTROLLER_RIGHTTRIGGER") > 0) {
-			if (canShoot && colorPercent-attackColorTake>0) {
+			if (canShoot && colorPercent-attackColorTake>0 && (colorPercent-attackColorTake)>15) {
 				GameObject temp = Instantiate (projectile, firePos.position, Quaternion.identity) as GameObject;
 				canShoot=false;
 				StartCoroutine(coolDown());
@@ -216,7 +230,7 @@ public class playercontroller : MonoBehaviour {
 		//--------------------------------------------------------------------
 		//MISC Controls
 		if (Input.GetAxis("KEYBOARD_ATTACK")>0) {
-			if (canShoot && colorPercent-attackColorTake>0) {
+			if (canShoot && colorPercent-attackColorTake>0 && (colorPercent-attackColorTake)>100) {
 				GameObject temp = Instantiate (projectile, firePos.position, Quaternion.identity) as GameObject;
 				canShoot=false;
 				StartCoroutine(coolDown());
@@ -250,5 +264,7 @@ public class playercontroller : MonoBehaviour {
 		canShoot = true;
 	}
 
-
+	public void damagePlayer(float amount){
+		colorPercent = colorPercent - amount;
+	}
 }
