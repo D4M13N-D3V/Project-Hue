@@ -19,6 +19,7 @@ public class playercontroller : MonoBehaviour {
 	public float attackColorTake = 1;
 	public float attackDamage = 1;
 
+	public Animator animator; 
 
 	public GameObject hud;
 	public GameObject colorthing;
@@ -40,6 +41,7 @@ public class playercontroller : MonoBehaviour {
 	public GameObject colorgauge;
 	// Use this for initialization
 	void Start () {
+		animator = GetComponent<Animator> ();
 		renderer = GetComponent<Renderer> ();
 		rigidbody = GetComponent<Rigidbody> ();
 		cameraParent = GameObject.Find ("CameraParent");
@@ -67,29 +69,29 @@ public class playercontroller : MonoBehaviour {
 		//CONTROLLER
 		//--------------------------------------------------------------------
 		//Movment Controls
-		
-		
-		
-		//DIAGNOL DIRECTIONS//			
-
-		//LEFTUP
 
 		Vector3 newvel = new Vector3 (0, 0, 0);
-		if(Input.GetAxis ("CONTROLLER_HLS")<-0.1F){
+		if(Input.GetAxis ("CONTROLLER_HLS")<-0.1F || Input.GetAxis ("KEYBOARD_HMOVE")<0F){
 			newvel = newvel+(transform.right*speed);
 		}
 		//RIGHT
-		if(Input.GetAxis("CONTROLLER_HLS")>0.1F){
+		if(Input.GetAxis("CONTROLLER_HLS")>0.1F || Input.GetAxis("KEYBOARD_HMOVE")>0F){
 			newvel = newvel+(-transform.right*speed);
 		}
 		//UP
-		if(Input.GetAxis ("CONTROLLER_VLS")>0.1F){
+		if(Input.GetAxis ("CONTROLLER_VLS")>0.1F || Input.GetAxis ("KEYBOARD_VMOVE")>0F){
 			newvel = newvel+(transform.up*speed);
 		}
 		//DOWN
-		if(Input.GetAxis("CONTROLLER_VLS")<-0.1F){
+		if(Input.GetAxis("CONTROLLER_VLS")<-0.1F || Input.GetAxis("KEYBOARD_VMOVE")<0F){
 			newvel = newvel+(-transform.up*speed);
 		}
+
+		if (newvel == new Vector3 (0, 0, 0)) {
+			animator.SetBool("Walking",false);
+		} else {
+			animator.SetBool("Walking",true);
+		}	
 		rigidbody.velocity = newvel;
 
 
@@ -97,47 +99,75 @@ public class playercontroller : MonoBehaviour {
 		// Direction Controls
 
 
-		if(Input.GetAxis ("CONTROLLER_HRS")<-0.4F && Input.GetAxis ("CONTROLLER_VRS")<-0.1F){
+
+
+		if(Input.GetAxis ("CONTROLLER_HRS")<-0.4F && Input.GetAxis ("CONTROLLER_VRS")<-0.1F || Input.GetAxis ("KEYBOARD_HFACE")<-0F && Input.GetAxis ("KEYBOARD_VFACE")<0.0F){
 			currentDirection = "LeftUp";
 			renderer.material.mainTexture=leftStill;
 		}
 		//RIGHT
-		else if(Input.GetAxis("CONTROLLER_HRS")>0.4F && Input.GetAxis ("CONTROLLER_VRS")<-0.4F){
+		else if(Input.GetAxis("CONTROLLER_HRS")>0.4F && Input.GetAxis ("CONTROLLER_VRS")<-0.4F || Input.GetAxis("KEYBOARD_HFACE")>0F && Input.GetAxis ("KEYBOARD_VFACE")<-0F){
 			currentDirection = "RightUp";
 			renderer.material.mainTexture=rightStill;
 		}
 		//UP
-		else if(Input.GetAxis ("CONTROLLER_HRS")<-0.4F && Input.GetAxis ("CONTROLLER_VRS")>0.4F){
+		else if(Input.GetAxis ("CONTROLLER_HRS")<-0.4F && Input.GetAxis ("CONTROLLER_VRS")>0.4F || Input.GetAxis ("KEYBOARD_HFACE")<-0F && Input.GetAxis ("KEYBOARD_VFACE")>0F){
 			currentDirection = "LeftDown";
 			renderer.material.mainTexture=leftStill;
 		}
 		//DOWN
-		else if(Input.GetAxis ("CONTROLLER_HRS")>0.4F && Input.GetAxis("CONTROLLER_VRS")>0.4F){
+		else if(Input.GetAxis ("CONTROLLER_HRS")>0.4F && Input.GetAxis("CONTROLLER_VRS")>0.4F || Input.GetAxis ("KEYBOARD_HFACE")>0F && Input.GetAxis("KEYBOARD_VFACE")>0F){
 			currentDirection = "RightDown";
 			renderer.material.mainTexture=rightStill;
 		}
-		else if(Input.GetAxis ("CONTROLLER_HRS")<-0.4F){
+		else if(Input.GetAxis ("CONTROLLER_HRS")<-0.4F || Input.GetAxis ("KEYBOARD_HFACE")<-0F){
 			currentDirection = "Left";
 			renderer.material.mainTexture=leftStill;
 		}
 		//RIGHT
-		else if(Input.GetAxis("CONTROLLER_HRS")>0.4F){
+		else if(Input.GetAxis("CONTROLLER_HRS")>0.4F || Input.GetAxis("KEYBOARD_HFACE")>0F){
 			currentDirection = "Right";
 			renderer.material.mainTexture=rightStill;
 		}
 		//UP
-		else if(Input.GetAxis ("CONTROLLER_VRS")>0.4F){
+		else if(Input.GetAxis ("CONTROLLER_VRS")>0.4F || Input.GetAxis ("KEYBOARD_VFACE")>0F){
 			currentDirection = "Down";
 			renderer.material.mainTexture=downStill;
 		}
 		//DOWN
-		else if(Input.GetAxis("CONTROLLER_VRS")<-0.4F){
+		else if(Input.GetAxis("CONTROLLER_VRS")<-0.4F || Input.GetAxis("KEYBOARD_VFACE")<0F){
 			currentDirection = "Up";
 			renderer.material.mainTexture=upStill;
 		}
+
+		if (currentDirection == "Up") {
+			animator.SetInteger ("Dir", 1);
+		}
+		else if (currentDirection == "RightUp") {
+			animator.SetInteger ("Dir", 1);
+		}
+		else if (currentDirection == "LeftUp") {
+			animator.SetInteger ("Dir", 1);
+		}
+		else if (currentDirection == "Down") {
+			animator.SetInteger ("Dir", 2);
+		}
+		else if (currentDirection == "RightDown") {
+			animator.SetInteger ("Dir", 2);
+		}
+		else if (currentDirection == "LeftDown") {
+			animator.SetInteger ("Dir", 2);
+		}
+		else if (currentDirection == "Left") {
+			animator.SetInteger ("Dir", 3);
+		}
+		else if (currentDirection == "Right") {
+			animator.SetInteger ("Dir", 4);
+		}
+
 		//--------------------------------------------------------------------
 		//MISC Controls
-		if (Input.GetAxis ("CONTROLLER_RIGHTTRIGGER") > 0) {
+		if (Input.GetAxis ("CONTROLLER_RIGHTTRIGGER") > 0 || Input.GetAxis("KEYBOARD_ATTACK")>0) {
 			if (canShoot && colorPercent-attackColorTake>0 && (colorPercent-attackColorTake)>15) {
 				GameObject temp = Instantiate (projectile, firePos.position, Quaternion.identity) as GameObject;
 				canShoot=false;
@@ -147,7 +177,7 @@ public class playercontroller : MonoBehaviour {
 			}
 		}
 		
-		if (Input.GetButtonDown ("CONTROLLER_LEFTBUMPER")) {
+		if (Input.GetButtonDown ("CONTROLLER_LEFTBUMPER") || Input.GetButtonDown ("KEYBOARD_ANGLESWITCHLEFT")) {
 			currentAngle=currentAngle-90;
 			GameObject[] trees = GameObject.FindGameObjectsWithTag ("rotateWithCamera");
 			
@@ -157,7 +187,7 @@ public class playercontroller : MonoBehaviour {
 		}
 
 		}
-		if (Input.GetButtonDown ("CONTROLLER_RIGHTBUMPER")) {
+		if (Input.GetButtonDown ("CONTROLLER_RIGHTBUMPER")||Input.GetButtonDown ("KEYBOARD_ANGLESWITCHLEFT")) {
 			currentAngle=currentAngle+90;
 			GameObject[] trees = GameObject.FindGameObjectsWithTag ("rotateWithCamera");
 			cameraParent.transform.eulerAngles = cameraParent.transform.eulerAngles + new Vector3 (0, 90, 0);
@@ -168,94 +198,14 @@ public class playercontroller : MonoBehaviour {
 		//--------------------------------------------------------------------
 
 
-		if(Input.GetAxis ("KEYBOARD_HMOVE")<0F){
-			newvel = newvel+(transform.right*speed);
-		}
-		//RIGHT
-		if(Input.GetAxis("KEYBOARD_HMOVE")>0F){
-			newvel = newvel+(-transform.right*speed);
-		}
-		//UP
-		if(Input.GetAxis ("KEYBOARD_VMOVE")>0F){
-			newvel = newvel+(transform.up*speed);
-		}
-		//DOWN
-		if(Input.GetAxis("KEYBOARD_VMOVE")<0F){
-			newvel = newvel+(-transform.up*speed);
-		}
-		rigidbody.velocity = newvel;
-		
-		
-		//--------------------------------------------------------------------
-		// Direction Controls
-		
-		if(Input.GetAxis ("KEYBOARD_HFACE")<-0F && Input.GetAxis ("KEYBOARD_VFACE")<0.0F){
-			currentDirection = "LeftUp";
-			renderer.material.mainTexture=leftStill;
-		}
-		//RIGHT
-		else if(Input.GetAxis("KEYBOARD_HFACE")>0F && Input.GetAxis ("KEYBOARD_VFACE")<-0F){
-			currentDirection = "RightUp";
-			renderer.material.mainTexture=rightStill;
-		}
-		//UP
-		else if(Input.GetAxis ("KEYBOARD_HFACE")<-0F && Input.GetAxis ("KEYBOARD_VFACE")>0F){
-			currentDirection = "LeftDown";
-			renderer.material.mainTexture=downStill;
-		}
-		//DOWN
-		else if(Input.GetAxis ("KEYBOARD_HFACE")>0F && Input.GetAxis("KEYBOARD_VFACE")>0F){
-			currentDirection = "RightDown";
-			renderer.material.mainTexture=upStill;
-		}
-		else if(Input.GetAxis ("KEYBOARD_HFACE")<-0F){
-			currentDirection = "Left";
-			renderer.material.mainTexture=leftStill;
-		}
-		//RIGHT
-		else if(Input.GetAxis("KEYBOARD_HFACE")>0F){
-			currentDirection = "Right";
-			renderer.material.mainTexture=rightStill;
-		}
-		//UP
-		else if(Input.GetAxis ("KEYBOARD_VFACE")>0F){
-			currentDirection = "Down";
-			renderer.material.mainTexture=downStill;
-		}
-		//DOWN
-		else if(Input.GetAxis("KEYBOARD_VFACE")<0F){
-			currentDirection = "Up";
-			renderer.material.mainTexture=upStill;
-		}
-		//--------------------------------------------------------------------
-		//MISC Controls
-		if (Input.GetAxis("KEYBOARD_ATTACK")>0) {
-			if (canShoot && colorPercent-attackColorTake>0 && (colorPercent-attackColorTake)>100) {
-				GameObject temp = Instantiate (projectile, firePos.position, Quaternion.identity) as GameObject;
-				canShoot=false;
-				StartCoroutine(coolDown());
-				colorPercent = colorPercent-attackColorTake;
-				temp.GetComponent<placeholderProjectile>().damage=attackDamage;
-			}
-		}
-		
-		if (Input.GetButtonDown ("KEYBOARD_ANGLESWITCHLEFT")) {
-			currentAngle=currentAngle-90;
-			GameObject[] trees = GameObject.FindGameObjectsWithTag("rotateWithCamera");
-			cameraParent.transform.eulerAngles = cameraParent.transform.eulerAngles+new Vector3(0,-90,0);
-			
-			for (int i = 0; i < trees.Length; i++)
-				trees[i].transform.eulerAngles = trees[i].transform.eulerAngles+new Vector3(0,-90,0);
-		}
-		
-		if (Input.GetButtonDown ("KEYBOARD_ANGLESWITCHRIGHT")) {
-			currentAngle=currentAngle+90;
-			GameObject[] trees = GameObject.FindGameObjectsWithTag ("rotateWithCamera");
-			cameraParent.transform.eulerAngles = cameraParent.transform.eulerAngles + new Vector3 (0, 90, 0);
-			for (int i = 0; i < trees.Length; i++)
-				trees[i].transform.eulerAngles = trees[i].transform.eulerAngles + new Vector3 (0, 90, 0);
-		}
+		// SPECIAL KEYBOARD AND MOUSE ONLY CONTROLS
 
+		// MOUSE AIM
+		Vector2 mousepos = Input.mousePosition;
+
+
+
+	
 
 	}
 
@@ -266,5 +216,17 @@ public class playercontroller : MonoBehaviour {
 
 	public void damagePlayer(float amount){
 		colorPercent = colorPercent - amount;
+		animator.SetTrigger ("Hit");
+		Vector3 screenPos = camera.gameObject.GetComponent<Camera>().WorldToScreenPoint(transform.position);
 	}
+
+
+
+
+
+
+
+
+
+
 }
